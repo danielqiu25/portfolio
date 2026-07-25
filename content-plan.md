@@ -71,6 +71,20 @@ Candidate for after v1 ships.
 
 ---
 
+## Deferred: visual design pass
+
+Text-only reads as competent but forgettable. After structure and content are settled, add:
+
+- **Colour system** beyond the current neutral base — one accent used with restraint, not a palette
+- **Project imagery** — screenshots, route-map renders, confusion matrices, architecture diagrams.
+  Real artifacts from the work beat stock illustration every time.
+- **A hero visual** — the routing graph or an agent architecture diagram are the strongest candidates
+- **Motion**, sparingly — scroll reveals or a subtle hero animation
+
+Sequenced last on purpose: visuals designed around content that then changes get thrown away.
+
+---
+
 ## Experience
 
 **Data Scientist Intern — Home Depot Askuity** (May–Aug 2026)
