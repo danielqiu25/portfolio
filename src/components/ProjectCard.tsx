@@ -17,6 +17,14 @@ export function ProjectCard({ project }: { project: Project }) {
         <p className="mt-2 inline-block rounded bg-accent-soft px-2 py-0.5 text-xs text-accent">
           {project.accolade}
         </p>
+      ) : project.links?.live ? (
+        <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-accent">
+          <span
+            aria-hidden="true"
+            className="size-1.5 rounded-full bg-accent"
+          />
+          Live demo available
+        </p>
       ) : null}
 
       <p className="mt-3 text-sm leading-relaxed text-muted">

@@ -1,6 +1,17 @@
+export type TraceLine = {
+  text: string;
+  delta?: string;
+  tone?: "head" | "frame" | "note";
+};
+
 export type ProjectSection = {
   heading: string;
   body: readonly string[];
+  /** Illustrative mono-styled block. Label it clearly as an example. */
+  trace?: {
+    caption: string;
+    lines: readonly TraceLine[];
+  };
 };
 
 export type Project = {
@@ -100,14 +111,75 @@ export const projects: readonly Project[] = [
   },
   {
     slug: "life-debugger",
-    title: "life-debugger",
+    title: "Life Debugger",
     summary:
-      "An AI lifestyle debugger. It logs your daily routine and traces which habits are causing problems, with a chat assistant that finds patterns across your logs.",
+      "A habit tracker that treats a run-down day like a program throwing an exception. You log your routine, it traces which habit is most likely responsible in the style of a stack trace, and a chat assistant answers questions about your own logged history.",
     tags: ["Product", "AI"],
-    stack: ["JavaScript"],
-    year: "2025",
-    links: { repo: "https://github.com/danielqiu25/life-debugger" },
-    published: false,
+    stack: [
+      "React",
+      "Vite",
+      "Tailwind CSS",
+      "Recharts",
+      "Node.js",
+      "Express",
+      "Gemini API",
+    ],
+    year: "2026",
+    role: "Solo project, frontend through backend",
+    links: {
+      repo: "https://github.com/danielqiu25/life-debugger",
+      live: "https://life-debugger-gamma.vercel.app/",
+    },
+    sections: [
+      {
+        heading: "Why I built it",
+        body: [
+          "I watched my mom run herself ragged on an overloaded work schedule, and the advice available to her was always some version of get more sleep. That's not useless, but it isn't actionable either. It doesn't tell you which of the fifteen things in your day is the one actually draining you.",
+          "The framing came from debugging. When a program breaks you don't guess, you read the stack trace and it points at the line most likely responsible. I wanted something that did that for a day.",
+        ],
+      },
+      {
+        heading: "How it works",
+        body: [
+          "You log sleep, work hours, exercise, screen time, and caffeine for any given day. The app produces an energy score and a stack-trace-style breakdown of what's most likely dragging it down, so the output reads as a ranked list of suspects rather than a single number.",
+          "A calendar view colour-codes your logged history and lets you edit past entries. An energy trend chart plots the last seven days. The Ask tab is a chat assistant that reads your logged history and answers questions like why do I have a headache right now, by looking for correlations in what you actually recorded.",
+        ],
+        trace: {
+          caption: "Illustrative example of the breakdown format",
+          lines: [
+            { text: "EnergyScore: 42 / 100", tone: "head" },
+            { text: "at SleepDebt (5.5h, target 7.5h)", delta: "−18", tone: "frame" },
+            { text: "at ScreenTime (6.2h, 2.1h before bed)", delta: "−12", tone: "frame" },
+            { text: "at Caffeine (3 cups, last at 16:40)", delta: "−9", tone: "frame" },
+            { text: "at Exercise (0 min logged)", delta: "−6", tone: "frame" },
+            { text: "at WorkHours (11.5h)", delta: "−13", tone: "frame" },
+            { text: "Smallest patch: move caffeine cutoff to 14:00", tone: "note" },
+          ],
+        },
+      },
+      {
+        heading: "Two decisions worth naming",
+        body: [
+          "The Gemini API is called through my own Express backend rather than from the browser. Calling it directly from the frontend would have been faster to build and would have leaked my API key to anyone who opened the network tab. The proxy exists so the key stays server-side. This is the least visible work in the project and the part I'd defend hardest.",
+          "Persistence is browser localStorage, not a database. For a prototype meant to be tried in one sitting, a real backend would have been scope I didn't need. The tradeoff is that your data is tied to one browser, which is the first thing I'd fix.",
+        ],
+      },
+      {
+        heading: "What it deliberately isn't",
+        body: [
+          "It doesn't diagnose anything and it isn't medical advice. The scoring is a hand-tuned heuristic, not a model trained on anything, and the assistant surfaces correlations in your own logs rather than making claims about causes. I put a disclaimer in the README and in the app because building something health-adjacent without being clear about its limits seemed like the wrong move.",
+        ],
+      },
+      {
+        heading: "What I'd do differently",
+        body: [
+          "Replace the heuristic with real correlation analysis across weeks of data. Right now the weights are my judgment about what tends to matter, which is a reasonable starting point and not much more than that.",
+          "Move persistence to a real backend with accounts, so data survives a browser change instead of living in localStorage.",
+          "Pull logging out of the user's hands where possible. Calendar or wearable integration would remove the main reason a tracker like this gets abandoned, which is that logging every day is work.",
+        ],
+      },
+    ],
+    published: true,
   },
 ];
 
