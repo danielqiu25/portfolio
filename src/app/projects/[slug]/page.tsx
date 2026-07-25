@@ -28,27 +28,29 @@ export default async function ProjectPage({ params }: Props) {
     : undefined;
 
   return (
-    <main className="mx-auto w-full max-w-2xl px-6 py-16 sm:py-20">
+    <main className="mx-auto w-full max-w-3xl px-6 py-16 sm:py-20">
       <Link
         href="/projects"
-        className="font-mono text-xs text-subtle transition-colors hover:text-foreground"
+        className="text-sm text-subtle transition-colors hover:text-foreground"
       >
         ← Projects
       </Link>
 
       <header className="mt-8">
         <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-          <h1 className="text-3xl font-medium tracking-tight">
+          <h1 className="text-3xl font-medium tracking-tight sm:text-4xl">
             {project.title}
           </h1>
           <span className="font-mono text-xs text-subtle">{project.year}</span>
         </div>
 
         {project.accolade ? (
-          <p className="mt-2 text-sm text-accent">{project.accolade}</p>
+          <p className="mt-3 inline-block rounded bg-accent-soft px-2.5 py-1 text-xs text-accent">
+            {project.accolade}
+          </p>
         ) : null}
 
-        <p className="mt-4 text-lg leading-relaxed text-muted">
+        <p className="prose-block mt-5 text-lg leading-relaxed text-muted">
           {project.summary}
         </p>
 
@@ -56,7 +58,7 @@ export default async function ProjectPage({ params }: Props) {
           {project.stack.map((tech) => (
             <li
               key={tech}
-              className="rounded border border-line px-2 py-0.5 font-mono text-xs text-subtle"
+              className="rounded border border-line px-2 py-0.5 font-mono text-[11px] text-subtle"
             >
               {tech}
             </li>
@@ -70,7 +72,7 @@ export default async function ProjectPage({ params }: Props) {
                 href={project.links.repo}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-md border border-line px-4 py-2 text-sm transition-colors hover:border-foreground"
+                className="rounded-md border border-line px-4 py-2 text-sm transition-colors hover:border-line-strong"
               >
                 Repository
               </a>
@@ -80,7 +82,7 @@ export default async function ProjectPage({ params }: Props) {
                 href={project.links.video}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-md border border-line px-4 py-2 text-sm transition-colors hover:border-foreground"
+                className="rounded-md border border-line px-4 py-2 text-sm transition-colors hover:border-line-strong"
               >
                 Demo video
               </a>
@@ -89,23 +91,37 @@ export default async function ProjectPage({ params }: Props) {
         ) : null}
       </header>
 
+      {videoId ? (
+        <div className="mt-10 overflow-hidden rounded-xl border border-line">
+          <iframe
+            className="aspect-video w-full"
+            src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+            title={`${project.title} demo`}
+            allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      ) : null}
+
       {project.role ? (
-        <section className="mt-10 border-y border-line py-5">
-          <h2 className="font-mono text-xs uppercase tracking-wider text-subtle">
-            My role
-          </h2>
-          <p className="mt-2 leading-relaxed">{project.role}</p>
+        <section className="mt-10 rounded-xl border border-line bg-panel p-6">
+          <p className="eyebrow">My role</p>
+          <p className="mt-3 leading-relaxed">{project.role}</p>
           {project.team?.length ? (
             <p className="mt-3 text-sm text-muted">
               Built with{" "}
               {project.team.map((member, i) => (
                 <span key={member.handle}>
-                  {i > 0 ? (i === project.team!.length - 1 ? ", and " : ", ") : ""}
+                  {i > 0
+                    ? i === project.team!.length - 1
+                      ? ", and "
+                      : ", "
+                    : ""}
                   <a
                     href={`https://github.com/${member.handle}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="underline underline-offset-4 transition-colors hover:text-foreground"
+                    className="underline decoration-line-strong underline-offset-4 transition-colors hover:text-foreground"
                   >
                     {member.name}
                   </a>
@@ -117,30 +133,20 @@ export default async function ProjectPage({ params }: Props) {
         </section>
       ) : null}
 
-      {videoId ? (
-        <div className="mt-10 overflow-hidden rounded-lg border border-line">
-          <iframe
-            className="aspect-video w-full"
-            src={`https://www.youtube-nocookie.com/embed/${videoId}`}
-            title={`${project.title} demo`}
-            allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
-      ) : null}
-
-      {project.sections?.map((section) => (
-        <section key={section.heading} className="mt-12">
-          <h2 className="text-xl font-medium tracking-tight">
-            {section.heading}
-          </h2>
-          {section.body.map((paragraph, i) => (
-            <p key={i} className="mt-4 leading-relaxed text-muted">
-              {paragraph}
-            </p>
-          ))}
-        </section>
-      ))}
+      <div className="prose-block mt-4 divide-y divide-line">
+        {project.sections?.map((section) => (
+          <section key={section.heading} className="py-10">
+            <h2 className="text-xl font-medium tracking-tight">
+              {section.heading}
+            </h2>
+            {section.body.map((paragraph, i) => (
+              <p key={i} className="mt-4 text-muted">
+                {paragraph}
+              </p>
+            ))}
+          </section>
+        ))}
+      </div>
     </main>
   );
 }
