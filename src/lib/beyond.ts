@@ -13,7 +13,11 @@ export type BeyondSection = {
   image?: BeyondImage;
   stats?: readonly { value: string; label: string }[];
   /** Nested activities that belong to this section. */
-  subsections?: readonly { heading: string; body: string }[];
+  subsections?: readonly {
+    heading: string;
+    body: string;
+    image?: BeyondImage;
+  }[];
   /** Scannable groups, used for contest results. */
   chipGroups?: readonly { label: string; items: readonly string[] }[];
   highlights?: readonly string[];
@@ -43,6 +47,13 @@ export const beyondSections: readonly BeyondSection[] = [
       {
         heading: "Marksmanship team",
         body: "Six years on the squadron air rifle team, two as captain, coaching a group of 19. Gold Pin for competing at the national level, top 10 at the Ontario Rifle and Pistol provincials, and team gold at regional championships.",
+        image: {
+          src: "/images/marksmanship.jpg",
+          alt: "Daniel Qiu shooting air rifle from a standing position at an electronic target during competition.",
+          width: 1200,
+          height: 1600,
+          caption: "Standing position, electronic target scoring.",
+        },
       },
       {
         heading: "Drill team",
@@ -56,6 +67,14 @@ export const beyondSections: readonly BeyondSection[] = [
     body: [
       "Before I coached, I competed. I was the main driver, builder, and strategist on our VEX V5 team for Over Under.",
     ],
+    image: {
+      src: "/images/vex-worlds.jpg",
+      alt: "The Caution Tape Robotics team posing under the VEX Robotics World Championship banner in Dallas. Teammates' faces are blurred for privacy.",
+      width: 1117,
+      height: 838,
+      caption:
+        "Caution Tape Robotics at the VEX World Championship in Dallas. Teammates' faces blurred for privacy.",
+    },
     stats: [
       { value: "Worlds", label: "Qualified for the world championships" },
       { value: "Finalist", label: "Provincial tournament, plus the Create Award" },

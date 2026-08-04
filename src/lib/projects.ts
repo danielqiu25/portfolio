@@ -99,15 +99,65 @@ export const projects: readonly Project[] = [
     published: true,
   },
   {
-    slug: "environmental-ai-predictor",
-    title: "Environmental AI Predictor",
+    slug: "growwise-ai",
+    title: "GrowWise AI",
     summary:
-      "An ML pipeline that predicts tree health across 10,000+ geographic points, with an async feature-fetch layer that pulls elevation, climate, and soil data from three APIs in parallel.",
+      "A map tool for people planning tree plantings. Click a location and it pulls live climate, soil, and elevation data, then predicts how healthy a tree would be there on a 0 to 100 scale.",
     tags: ["ML", "Data"],
-    stack: ["Python", "scikit-learn", "XGBoost", "FastAPI"],
+    stack: [
+      "Python",
+      "scikit-learn",
+      "Random Forest",
+      "FastAPI",
+      "REST APIs",
+    ],
     year: "2026",
-    accolade: "CXC Hackathon",
-    published: false,
+    role: "Built and tuned the model end to end: preprocessing, model selection, and parameter tuning",
+    team: [
+      { name: "Eric Huang", handle: "erichuangreal" },
+      { name: "Mason Zhang", handle: "MZhang-9" },
+      { name: "Jaden Yin", handle: "jadenyin56" },
+    ],
+    links: { repo: "https://github.com/danielqiu25/GrowWiseAI" },
+    sections: [
+      {
+        heading: "The problem",
+        body: [
+          "Built at the CXC hackathon. Reforestation efforts, whether they're community groups replanting after a wildfire or a conservation organization running a larger program, all run into the same question early on. Where should this go, when, and what species. Getting it wrong wastes the planting, and you don't find out for a year or two.",
+          "The environmental data needed to answer that exists, but it's scattered across separate sources and none of it is packaged for someone standing on a plot of land wondering whether a tree will survive there.",
+        ],
+      },
+      {
+        heading: "What it does",
+        body: [
+          "You click a point on the map and get back a predicted tree health score from 0 to 100, banded into readable categories from unhealthy through healthy to optimal, colour-coded so a whole area can be compared at a glance rather than read as numbers.",
+          "The point of the score is comparison. One location's number on its own doesn't mean much, but clicking six candidate sites and seeing which come back green is a decision you can actually act on.",
+        ],
+      },
+      {
+        heading: "Getting the data in time",
+        body: [
+          "Three separate APIs supply the inputs: rainfall, temperature, and soil conditions with elevation. The model needs all three before it can predict anything, and every click on the map is a fresh request, so fetching them one after another would have made the whole thing feel broken.",
+          "They run in parallel instead, so a click costs roughly the slowest single request rather than the sum of all three. When a source returns nothing for a point, which happened often enough to matter, the pipeline falls back to values derived from the surrounding area rather than failing the request. A slightly less precise answer is more useful here than an error message.",
+        ],
+      },
+      {
+        heading: "Choosing the model",
+        body: [
+          "Logistic regression came first and was too simple. It couldn't accommodate the number of variables we were feeding it in any useful way.",
+          "The more instructive failure was overfitting. Our early models were latching onto a small subset of the variables and ignoring the rest, which produced scores that looked fine and meant nothing. That's the failure mode that's dangerous in a hackathon, because a model can appear to work right up until you look at what it's actually keying on.",
+          "Random Forest was the answer, partly for accuracy and mostly for robustness. It resisted the overfitting we'd been fighting and needed far less hyperparameter tuning to behave sensibly, which matters a lot when the deadline is hours away and every tuning round costs you time you don't have.",
+        ],
+      },
+      {
+        heading: "What I'd do differently",
+        body: [
+          "Pick a narrower problem. We were trying to model tree health from a large set of loosely related environmental variables, and the relationships between them were genuinely hard to pin down in the time available. Fewer variables with clearer relationships to the outcome would have produced something more defensible.",
+          "Find better data. A lot of the difficulty traced back to inputs that were sparse or noisy, and no amount of model selection fixes that.",
+        ],
+      },
+    ],
+    published: true,
   },
   {
     slug: "life-debugger",

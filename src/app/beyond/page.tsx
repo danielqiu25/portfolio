@@ -34,7 +34,33 @@ export default function BeyondPage() {
               ) : null}
             </div>
 
-            {section.image ? (
+            {section.image && section.image.width > section.image.height ? (
+              <div className="mt-6">
+                {section.body.map((paragraph, i) => (
+                  <p
+                    key={i}
+                    className="mt-4 max-w-[62ch] leading-[1.75] text-muted first:mt-0"
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+                <figure className="mt-6">
+                  <Image
+                    src={section.image.src}
+                    alt={section.image.alt}
+                    width={section.image.width}
+                    height={section.image.height}
+                    sizes="(min-width: 768px) 768px, 100vw"
+                    className="w-full rounded-xl border border-line"
+                  />
+                  {section.image.caption ? (
+                    <figcaption className="mt-2 text-xs text-subtle">
+                      {section.image.caption}
+                    </figcaption>
+                  ) : null}
+                </figure>
+              </div>
+            ) : section.image ? (
               <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-[1fr_190px] sm:gap-8">
                 <div>
                   {section.body.map((paragraph, i) => (
@@ -121,20 +147,51 @@ export default function BeyondPage() {
             ))}
 
             {section.subsections ? (
-              <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {section.subsections.map((sub) => (
-                  <div
-                    key={sub.heading}
-                    className="rounded-xl border border-line bg-panel p-5"
-                  >
-                    <h3 className="font-medium tracking-tight">
-                      {sub.heading}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">
-                      {sub.body}
-                    </p>
-                  </div>
-                ))}
+              <div className="mt-7 grid grid-cols-1 gap-4">
+                {section.subsections.map((sub) =>
+                  sub.image ? (
+                    <div
+                      key={sub.heading}
+                      className="overflow-hidden rounded-xl border border-line bg-panel"
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-[240px_1fr]">
+                        <Image
+                          src={sub.image.src}
+                          alt={sub.image.alt}
+                          width={sub.image.width}
+                          height={sub.image.height}
+                          sizes="(min-width: 640px) 240px, 100vw"
+                          className="h-56 w-full object-cover object-top sm:h-full"
+                        />
+                        <div className="p-5">
+                          <h3 className="font-medium tracking-tight">
+                            {sub.heading}
+                          </h3>
+                          <p className="mt-2 max-w-[58ch] text-sm leading-relaxed text-muted">
+                            {sub.body}
+                          </p>
+                          {sub.image.caption ? (
+                            <p className="mt-3 text-xs text-subtle">
+                              {sub.image.caption}
+                            </p>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      key={sub.heading}
+                      className="rounded-xl border border-line bg-panel p-5"
+                    >
+                      <h3 className="font-medium tracking-tight">
+                        {sub.heading}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted">
+                        {sub.body}
+                      </p>
+                    </div>
+                  ),
+                )}
               </div>
             ) : null}
           </section>
