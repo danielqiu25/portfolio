@@ -97,6 +97,27 @@ export default function ExperiencePage() {
               </div>
             ) : null}
 
+            {role.decisions ? (
+              <section className="mt-8">
+                <h3 className="eyebrow">{role.decisions.heading}</h3>
+                <div className="mt-4 grid grid-cols-1 gap-4">
+                  {role.decisions.items.map((item) => (
+                    <div
+                      key={item.title}
+                      className="rounded-xl border border-line bg-panel p-5"
+                    >
+                      <h4 className="font-medium tracking-tight">
+                        {item.title}
+                      </h4>
+                      <p className="mt-2 max-w-[62ch] text-sm leading-[1.75] text-muted">
+                        {item.body}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
             {role.body ? (
               <div className="mt-8">
                 {role.body.map((paragraph, i) => (

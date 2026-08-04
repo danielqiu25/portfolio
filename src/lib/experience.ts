@@ -14,6 +14,11 @@ export type Role = {
   /** Narrative rendered as a numbered sequence. */
   steps?: readonly Step[];
   stats?: readonly { value: string; label: string }[];
+  /** Engineering decisions worth defending in an interview. */
+  decisions?: {
+    heading: string;
+    items: readonly { title: string; body: string }[];
+  };
   /** Rendered large, as the takeaway from the role. */
   pullQuote?: string;
   closing?: { heading: string; body: readonly string[] };
@@ -49,6 +54,23 @@ export const roles: readonly Role[] = [
         body: "Separately, I consolidated a multi-step manual upload process into a single file drop, running as an Airflow DAG on Google Cloud Composer. It's live in the product infrastructure.",
       },
     ],
+    decisions: {
+      heading: "Three decisions that mattered",
+      items: [
+        {
+          title: "Making it refuse to guess",
+          body: "Retrieved content is injected into the prompt and the model is instructed to answer only from it. That matters more than it sounds. A general-purpose model knows enough about common business metrics to produce a confident textbook definition that isn't the one this company actually uses, and models lean toward being helpful, so they invent rather than admit they don't know. I made the negative case explicit, so \"nothing relevant was retrieved\" became a defined path with a typed, schema-enforced response instead of an edge case nobody planned for.",
+        },
+        {
+          title: "Telling two nearly identical questions apart",
+          body: "Routing turned out to be harder than retrieval. \"What is fill rate?\" and \"What's my fill rate this week?\" are almost the same string with opposite intents, one definitional and one a data query. Intent classifiers fail here because the lexical overlap swamps the semantic difference, and the default pull is to treat any mention of a real metric as a request for data. Contrastive examples and an explicit priority rule fixed it.",
+        },
+        {
+          title: "Verifying grounding, not status codes",
+          body: "A hallucinated answer looks exactly like a correct one, so \"it returned successfully\" is not a useful test. I logged the raw retrieved text and compared it against the model's final output to confirm the answer actually came from the retrieved document rather than the model's own pretrained knowledge.",
+        },
+      ],
+    },
     closing: {
       heading: "The hard part",
       body: [
